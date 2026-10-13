@@ -2,9 +2,13 @@
 # Contributor: wszqkzqk
 
 pkgname=wechat-bin
-pkgver=4.1.13.20
+pkgver=4.1.13.25
+# 用 epoch=1 壓在 AUR 那顆之上（AUR 版 depends 仍寫 libvlc）。之前靠 pkgrel=1001 硬壓，
+# 上游一 bump pkgver 就失效（實測 4.1.13.25 之前那版就是這樣被蓋回來的）；epoch 才是
+# 版本比較先看的欄位，pkgrel 回到 1 跟著上游走。
 pkgrel=1
-epoch=
+epoch=1
+
 pkgdesc="微信是一种生活方式. This is a repackage of WeChat."
 arch=('x86_64' 'aarch64' 'loong64')
 url="https://weixin.qq.com/"
@@ -43,7 +47,11 @@ depends=(
 	"cairo"
 	"libx11"
 	"expat"
-	"libvlc"
+	# libvlc 已移除：微信自帶自己的 VLC 於 /opt/wechat/（libvlc.so.5.6.1、libvlccore.so.9.0.1
+	# 與整套 vlc_plugins/），且唯一使用者 /opt/wechat/wxplayer 用 DT_RPATH=$ORIGIN 只会載自帶那份。
+	# 實測證據見 /tmp/wechat-novlc/evidence.txt（ldd、readelf -d、私有 mount namespace 遮掉
+	# /usr/lib/libvlc* 後解析不變、ld.so --verify 全回 0），上游 Tencent .deb 的 control
+	# 也從未宣告 libvlc 依賴（只有 fonts-noto-cjk）。裝了系統 libvlc 也不會被用到，故不進 optdepends。
 	"libxdamage"
 	"libdrm"
 	"mesa"
