@@ -2,7 +2,7 @@
 # Contributor: wszqkzqk
 
 pkgname=wechat-bin
-pkgver=4.1.13.25
+pkgver=4.1.13.26
 # 用 epoch=1 壓在 AUR 那顆之上（AUR 版 depends 仍寫 libvlc）。之前靠 pkgrel=1001 硬壓，
 # 上游一 bump pkgver 就失效（實測 4.1.13.25 之前那版就是這樣被蓋回來的）；epoch 才是
 # 版本比較先看的欄位，pkgrel 回到 1 跟著上游走。
